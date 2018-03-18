@@ -47,7 +47,7 @@ contexts:
     - match: '\b(0x[0-9A-Fa-f]+)([kKmMgG]b?)?\b'
       comment: Hex numbers
       scope: constant.numeric.terraform
-    - match: '(resource)\s+((")(\w+)("))\s+((")([\w-]+)("))\s+\{'
+    - match: '(resource)\s+((")(\w+)?("))\s+((")([\w-]+)?("))\s*\{'
       scope: meta.resource.terraform entity.name.resource.terraform
       captures:
         1: storage.type.function.terraform
@@ -59,7 +59,7 @@ contexts:
         7: punctuation.definition.string.begin.terraform
         8: meta.resource.name.terraform
         9: punctuation.definition.string.end.terraform
-    - match: '(data)\s+((")(\w+)("))\s+((")([\w-]+)("))\s+\{'
+    - match: '(data)\s+((")(\w+)?("))\s+((")([\w-]+)?("))\s*\{'
       scope: meta.data-source.terraform entity.name.resource.terraform
       captures:
         1: storage.type.function.terraform
@@ -71,22 +71,28 @@ contexts:
         7: punctuation.definition.string.begin.terraform
         8: meta.data-source.name.terraform
         9: punctuation.definition.string.end.terraform
-    - match: '(provider|provisioner|variable|module|atlas)\s+(")([\w-]+)(")\s+({)'
+    - match: '(provider|provisioner|variable|module|atlas)\s+(")([\w-]+)?(")\s*{'
       scope: entity.name.resource.terraform
       captures:
         1: storage.type.function.terraform
         2: string.terraform punctuation.definition.string.begin.terraform
         3: string.quoted.double.terraform
         4: string.terraform punctuation.definition.string.end.terraform
-        5: punctuation.definition.tag.terraform
-    - match: '(output)\s+(")([\w-\.]+)(")\s+({)'
+    - match: '(output)\s+(")([\w-\.]+)(")\s*{'
       scope: entity.name.resource.terraform
       captures:
         1: storage.type.function.terraform
         2: string.terraform punctuation.definition.string.begin.terraform
         3: string.quoted.double.terraform
         4: string.terraform punctuation.definition.string.end.terraform
-        5: punctuation.definition.tag.terraform
+    - match: ^\s*(locals|terraform)\s*{
+      captures:
+        1: storage.type.function.terraform
+      push:
+        - meta_content_scope: meta.block.terraform
+        - match: '^\s*}'
+          pop: true
+        - include: main
     - match: '([\w_-]+)\s*(=)\s*'
       comment: Value assignments (left hand side not in double quotes)
       captures:
@@ -132,8 +138,7 @@ contexts:
       push:
         - meta_scope: meta.embed.terraform
         - match: '\}'
-          captures:
-            0: punctuation.section.embed.end.terraform
+          scope: punctuation.section.embed.end.terraform
           pop: true
         - include: interpolated_terraform
   interpolated_terraform:
