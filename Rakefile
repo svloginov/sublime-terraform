@@ -51,7 +51,7 @@ end
 def get_providers
   uri = URI("https://www.terraform.io/docs/providers/index.html")
   html = download_and_parse(uri)
-  html.search("li.active ul.nav > li > a").map do |a|
-    [a.text, URI(BASE_URL + a["href"])]
+  html.search("table.table a").map do |a|
+    [a, URI(BASE_URL + a["href"].to_s)]
   end
 end
