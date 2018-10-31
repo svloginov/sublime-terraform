@@ -78,7 +78,7 @@ contexts:
         2: string.terraform punctuation.definition.string.begin.terraform
         3: string.quoted.double.terraform
         4: string.terraform punctuation.definition.string.end.terraform
-    - match: '(output)\s+(")([\w-\.]+)(")\s*{'
+    - match: '(output)\s+(")([-\w\.]+)(")\s*{'
       scope: entity.name.resource.terraform
       captures:
         1: storage.type.function.terraform
