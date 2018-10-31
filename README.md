@@ -8,6 +8,7 @@ Fork of [Terraform.tmLanguage][base_repo] with some sweet improvements.
 * Syntax highlighting for `.tf` and `.tfvars` files.
 * Format on save using `terraform fmt` (only available in version >= 0.6.15)
 * Code completion for resources and data sources
+* Support [`bat`](https://github.com/sharkdp/bat)
 * Snippets
 
 Installation
